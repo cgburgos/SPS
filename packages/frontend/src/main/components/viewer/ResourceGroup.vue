@@ -34,7 +34,7 @@
             class="primary"
             @click="$emit('show-add-overlay')"
           >
-            add
+            Add objects
           </v-btn>
         </div>
         <div v-show="removedResources.length !== 0" class="px-3 caption pb-5">

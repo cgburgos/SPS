@@ -1,7 +1,7 @@
 <template>
   <v-card>
     <v-card-title
-      class="blue dark d-flex align-center flex-grow-1 elevation-3"
+      class="primary d-flex align-center flex-grow-1 elevation-0"
       style="position: sticky; width: 100%; top: 0; z-index: 10"
     >
       <div class="flex-shrink-1">
@@ -18,7 +18,12 @@
         />
       </div>
       <div class="text-right flex-grow-1">
-        <v-btn x-small rounded class="ml-2" @click="showObjectDialog = true">
+        <v-btn
+          x-small
+          rounded
+          class="ml-2 elevation-0"
+          @click="showObjectDialog = true"
+        >
           Add by object url
         </v-btn>
         <v-btn dark icon class="ml-2" @click="$emit('close')">

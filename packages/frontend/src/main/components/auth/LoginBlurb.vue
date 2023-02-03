@@ -4,30 +4,44 @@
       <span class="primary--text">
         <b>
           <!-- display: inline -->
-          <a class="text-decoration-none" href="https://speckle.systems" target="_blank"
-            >Speckle</a
+          <a
+            class="text-decoration-none"
+            href="https://www.unstudio.com"
+            target="_blank"
+            >UNSpeckle</a
           >
         </b>
       </span>
       <!-- display: inline -->
-      <span class="font-weight-light"
-        >, empowering your design and construction data.</span
-      >
+      <span class="font-weight-light">, at the core of our design!</span>
     </v-card-text>
     <div>
-      <v-card-text class="text-h6 font-weight-regular">
-        Speckle helps leading AEC companies freely exchange data between software silos
-        and automate design and delivery processes:
-        <span class="primary--text text--disabled">
-          join 100s of designers, architects, engineers and developers building the
-          digital future of AEC.
-        </span>
+      <v-card-text class="text--text text-h6 font-weight-regular">
+        UNSpeckle is the platform that we developed to connect your projects, teams and
+        data in a
+        <b>single app</b>
+        . With a large array of tools and features that we hope that makes your designs
+        better, your projects more efficient and your
+        <b>life easier</b>
+        .
+      </v-card-text>
+      <v-card-text class="text--text">
+        Currently in {{ ServerPack.displayVersion }} with HoPI v{{ HoPI.version }}
       </v-card-text>
     </div>
   </v-card>
 </template>
 <script>
+import HoPIPackage from 'C:\\Users\\crist\\Documents\\DevFolder\\HoPI\\package.json'
+import ServerPackage from '../../../../../../package.json'
+
 export default {
-  name: 'LoginBlurb'
+  name: 'LoginBlurb',
+  data() {
+    return {
+      HoPI: HoPIPackage,
+      ServerPack: ServerPackage
+    }
+  }
 }
 </script>

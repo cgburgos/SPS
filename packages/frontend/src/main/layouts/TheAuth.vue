@@ -4,6 +4,14 @@
     id="speckle"
     :class="`${$vuetify.theme.dark ? 'background-dark' : 'background-light'}`"
   >
+    <div style="position: absolute; top: -0px; left: 100px">
+      <v-img
+        src="../../assets/UNSpeckle.svg"
+        height="600px"
+        width="500px"
+        contain="true"
+      ></v-img>
+    </div>
     <v-container fill-height fluid>
       <v-row align="center" justify="center">
         <v-col
@@ -19,11 +27,15 @@
         <v-col cols="11" sm="8" md="6" lg="4" xl="3">
           <router-view></router-view>
           <!-- Temporary revert of our no v-html policy: -->
-          <p
-            v-if="serverInfo"
-            class="caption text-center mt-2"
-            v-html="serverInfo.termsOfService"
-          ></p>
+          <p v-if="serverInfo" class="caption text-center mt-2">
+            <a
+              class="text-decoration-none"
+              href="https://www.unstudio.com"
+              target="_blank"
+            >
+              UNStudio
+            </a>
+          </p>
         </v-col>
       </v-row>
     </v-container>

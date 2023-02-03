@@ -40,6 +40,11 @@
           {{ stream.commit.message }}
         </router-link>
       </div>
+      <div class="text--secondary space-grotesk flex-grow-1" style="user-select: none">
+        /
+        <v-icon small>mdi-calendar</v-icon>
+        {{ new Date(stream.commit.createdAt).toLocaleString('en-DE') }}
+      </div>
       <div class="text-truncate flex-shrink-0 hidden-xs-only">
         <!-- <user-avatar
           :id="stream.commit.authorId"

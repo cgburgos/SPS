@@ -1,72 +1,84 @@
 <template>
-  <div>
-    <div
-      :class="`${background} d-flex px-2 py-3 mb-2 align-center rounded-lg`"
-      :style="`${highlighted ? 'outline: 0.2rem solid #047EFB;' : ''}`"
+  <v-hover v-slot="{ hover }">
+    <v-card
+      flat
+      :class="elevation - 0"
+      :style="`${
+        hover
+          ? 'border: 1px solid #d2dad3;  background-color: #f1f2f0;'
+          : 'border: 1px solid #d2dad3; '
+      }`"
     >
       <div
-        v-tooltip="selectDisabled ? selectDisabledMessage : undefined"
-        class="checkbox-hover-wrapper"
+        :class="`$ elevation-0 d-flex px-2 py-3 mb-2 align-center rounded-lg`"
+        :style="`${
+          highlighted ? 'outline: 0.2rem solid #d2dad3; background-color: #f1f2f0' : ''
+        }`"
       >
-        <v-checkbox
-          v-if="selectable"
-          v-model="selectedState"
-          :disabled="selectDisabled"
-          dense
-          hide-details
-          class="mt-0 ml-2 pa-0"
-          @change="onSelect"
-        />
-      </div>
-      <div class="flex-shrink-0">
-        <user-avatar :id="commit.authorId" :size="30" />
-      </div>
-      <div class="text-body-1 ml-4 text-truncate">
-        <router-link
-          v-if="links"
-          class="text-decoration-none"
-          :to="route ? route : `/streams/${streamId}/commits/${commit.id}`"
+        <div
+          v-tooltip="selectDisabled ? selectDisabledMessage : undefined"
+          class="checkbox-hover-wrapper"
         >
-          {{ commit.message }}
-        </router-link>
-        <span v-else>{{ commit.message }}</span>
-        <div class="caption text-truncate">
-          <b>{{ commit.authorName }}</b>
-          &nbsp;
-          <timeago :datetime="commit.createdAt"></timeago>
-          ({{ new Date(commit.createdAt).toLocaleString() }})
+          <v-checkbox
+            v-if="selectable"
+            v-model="selectedState"
+            :disabled="selectDisabled"
+            dense
+            hide-details
+            class="mt-0 ml-2 pa-0"
+            @change="onSelect"
+          />
+        </div>
+        <div class="flex-shrink-0">
+          <user-avatar :id="commit.authorId" :size="30" />
+        </div>
+        <div class="text-body-1 ml-4 text-truncate">
+          <router-link
+            v-if="links"
+            class="text-decoration-none"
+            :to="route ? route : `/streams/${streamId}/commits/${commit.id}`"
+          >
+            {{ commit.message }}
+          </router-link>
+          <span v-else>{{ commit.message }}</span>
+          <div class="caption text-truncate">
+            <b>{{ commit.authorName }}</b>
+            &nbsp;
+            <timeago :datetime="commit.createdAt"></timeago>
+            ({{ new Date(commit.createdAt).toLocaleString() }})
+          </div>
+        </div>
+        <div class="text-right flex-grow-1">
+          <commit-received-receipts
+            v-if="showReceivedReceipts"
+            :stream-id="streamId"
+            :commit-id="commit.id"
+          />
+          <span v-if="commit.branchName && showBranch" class="caption">
+            <v-chip
+              v-if="links"
+              v-tooltip="`On branch '${commit.branchName}'`"
+              small
+              color="primary"
+              :to="`/streams/${streamId}/branches/${commit.branchName}`"
+            >
+              <v-icon small class="mr-2">mdi-source-branch</v-icon>
+              {{ commit.branchName }}
+            </v-chip>
+            <v-chip v-else small>
+              <v-icon small class="mr-2">mdi-source-branch</v-icon>
+              {{ commit.branchName }}
+            </v-chip>
+          </span>
+          <source-app-avatar
+            v-if="showSourceApp"
+            :application-name="commit.sourceApplication"
+          />
+          <commit-share-btn v-if="shareable" @share="onShareClicked" />
         </div>
       </div>
-      <div class="text-right flex-grow-1">
-        <commit-received-receipts
-          v-if="showReceivedReceipts"
-          :stream-id="streamId"
-          :commit-id="commit.id"
-        />
-        <span v-if="commit.branchName && showBranch" class="caption">
-          <v-chip
-            v-if="links"
-            v-tooltip="`On branch '${commit.branchName}'`"
-            small
-            color="primary"
-            :to="`/streams/${streamId}/branches/${commit.branchName}`"
-          >
-            <v-icon small class="mr-2">mdi-source-branch</v-icon>
-            {{ commit.branchName }}
-          </v-chip>
-          <v-chip v-else small>
-            <v-icon small class="mr-2">mdi-source-branch</v-icon>
-            {{ commit.branchName }}
-          </v-chip>
-        </span>
-        <source-app-avatar
-          v-if="showSourceApp"
-          :application-name="commit.sourceApplication"
-        />
-        <commit-share-btn v-if="shareable" @share="onShareClicked" />
-      </div>
-    </div>
-  </div>
+    </v-card>
+  </v-hover>
 </template>
 <script>
 import { gql } from '@apollo/client/core'

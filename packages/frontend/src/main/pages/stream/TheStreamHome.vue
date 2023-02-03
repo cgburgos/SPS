@@ -86,27 +86,8 @@
             </v-col>
             <v-col v-if="comments.totalCount === 0" class="mt-5">
               <div class="d-flex align-center">
-                <a
-                  href="https://speckle.systems/tutorials/live-3d-comments-for-distributed-real-time-reviews/"
-                  target="_blank"
-                >
-                  <v-img
-                    src="@/assets/comments.gif"
-                    max-width="250"
-                    class="rounded-xl elevation-5"
-                  ></v-img>
-                </a>
                 <div class="ml-5">
                   <span class="caption">There are no comments in this stream yet.</span>
-                  <br />
-                  <a
-                    href="https://speckle.systems/tutorials/live-3d-comments-for-distributed-real-time-reviews/"
-                    target="_blank"
-                    class="font-weight-bold text-decoration-none"
-                  >
-                    Read more about Speckle's Live 3D Comments for Distributed Real Time
-                    Reviews!
-                  </a>
                 </div>
               </div>
             </v-col>
@@ -121,9 +102,9 @@
 
     <!-- Stream has no data -->
     <no-data-placeholder v-if="stream && stream.commits.totalCount === 0">
-      <h2>This stream has not received any data.</h2>
+      <h2>This Project has not received any data.</h2>
       <p class="caption">
-        Streams are repositories where you can store, version and retrieve various
+        Project are repositories where you can store, version and retrieve various
         design data.
       </p>
     </no-data-placeholder>

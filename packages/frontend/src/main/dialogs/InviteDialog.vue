@@ -21,8 +21,8 @@
         <v-form ref="form" v-model="valid" class="px-2" @submit.prevent="sendInvite">
           <v-card-text class="pb-0 mb-4">
             <template v-if="isServerInvite">
-              Speckle will send a server invite link to the email below. You can also
-              add a personal message if you want to.
+              UNSpeckle will send an invite link to the email below. You can also add a
+              personal message if you want to.
             </template>
             <template v-else>
               We will send an invite to the user below - once they accept, they will
@@ -41,7 +41,7 @@
               v-model="localEmail"
               :rules="validation.emailRules"
               :disabled="loading"
-              label="email"
+              label="Email"
             ></v-text-field>
             <v-textarea
               v-model="message"
@@ -49,10 +49,16 @@
               :auto-grow="true"
               :rows="1"
               :disabled="loading"
-              label="message"
+              label="Message"
             />
             <v-card-actions>
-              <v-btn block color="primary" type="submit" :disabled="loading">
+              <v-btn
+                block
+                class="elevation-0"
+                color="primary"
+                type="submit"
+                :disabled="loading"
+              >
                 Send invite
               </v-btn>
             </v-card-actions>
@@ -102,7 +108,7 @@ export default Vue.extend({
   data() {
     return {
       localEmail: null as Nullable<string>,
-      message: 'Hey, I want to share this stream with you!',
+      message: 'Hey, I want to share a project with you!',
       valid: false,
       error: null as Nullable<string>,
       showError: false,
@@ -144,7 +150,7 @@ export default Vue.extend({
     resetForm() {
       this.clear()
       this.localEmail = this.email
-      this.message = `Hey, I want to share a stream on Speckle with you!`
+      this.message = `Hey, I want to share a project with you!`
     },
     clear() {
       this.error = null

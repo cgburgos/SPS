@@ -9,12 +9,12 @@
     <portal-target name="nav">
       <!-- Main Actions -->
       <v-list v-if="true" dense nav class="mb-0 pb-0">
-        <v-list-item class="primary elevation-5" dark @click="newStreamDialog = true">
+        <v-list-item class="primary elevation-0" dark @click="newStreamDialog = true">
           <v-list-item-icon>
             <v-icon class="">mdi-folder-plus</v-icon>
           </v-list-item-icon>
           <v-list-item-content>
-            <v-list-item-title>New Stream</v-list-item-title>
+            <v-list-item-title>New Project</v-list-item-title>
           </v-list-item-content>
         </v-list-item>
         <v-list-item @click="inviteUsersDialog = true">
@@ -46,9 +46,9 @@
             <v-icon class="mt-2">mdi-folder-outline</v-icon>
           </v-list-item-icon>
           <v-list-item-content>
-            <v-list-item-title>Streams</v-list-item-title>
+            <v-list-item-title>Projects</v-list-item-title>
             <v-list-item-subtitle class="caption">
-              All your streams
+              All your projects
             </v-list-item-subtitle>
           </v-list-item-content>
         </v-list-item>

@@ -1,30 +1,20 @@
 <template>
-  <v-card
-    class="elevation-20"
-    :style="`${serverInfo.inviteOnly ? 'border: 2px solid #047EFB' : ''}`"
-    rounded="lg"
-  >
-    <div
-      v-show="serverInfo.inviteOnly"
-      class="caption text-center"
-      style="background: #047efb"
-    >
+  <v-card flat outlined rounded="lg">
+    <!-- <div v-show="serverInfo.inviteOnly" style="background: #047efb">
       <v-icon small>mdi-shield-alert-outline</v-icon>
       This Speckle server is invite only.
-    </div>
-    <v-card-title class="justify-center pt-5 pb-2 hidden-md-and-up">
-      <v-img src="@/assets/logo.svg" max-width="30" />
-    </v-card-title>
-    <v-card-title class="justify-center pt-5 pb-2">
-      <span class="hidden-md-and-up mr-2 primary--text">Speckle:</span>
-      Interoperability in seconds
-    </v-card-title>
+    </div> -->
+    <!-- <v-img src="@/assets/HoPIHome.svg" max-width="30" /> -->
+    <!-- <v-card-title class="justify-center pt-5 pb-2 hidden-md-and-up text--primary">
+      YES
+    </v-card-title> -->
+    <v-card-title class="justify-center pt-5 pb-2">Who are you?</v-card-title>
     <auth-strategies :strategies="strategies" :app-id="appId" :challenge="challenge" />
     <div v-if="hasLocalStrategy">
-      <v-card-title class="justify-center pb-5 pt-0 body-1 text--secondary">
-        <v-divider class="mx-4"></v-divider>
-        Login with email & password
-        <v-divider class="mx-4"></v-divider>
+      <v-card-title class="justify-center pb-5 pt-0 body-1">
+        <v-divider class="mx-4 primary"></v-divider>
+        Login with your UNStudio Credentials
+        <v-divider class="mx-4 primary"></v-divider>
       </v-card-title>
       <v-alert
         v-model="registrationError"
@@ -52,7 +42,7 @@
             <v-col cols="12">
               <v-text-field
                 v-model="form.email"
-                label="your email"
+                label="Email"
                 :rules="validation.emailRules"
                 filled
                 single-line
@@ -62,7 +52,7 @@
             <v-col cols="12">
               <v-text-field
                 v-model="form.password"
-                label="password"
+                label="Password"
                 type="password"
                 :rules="validation.passwordRules"
                 filled
@@ -72,7 +62,14 @@
               />
             </v-col>
             <v-col cols="12">
-              <v-btn block large color="primary" type="submit" @click="loginUser()">
+              <v-btn
+                block
+                large
+                color="primary"
+                class="elevation-0"
+                type="submit"
+                @click="loginUser()"
+              >
                 Log in
               </v-btn>
             </v-col>
@@ -80,7 +77,7 @@
         </v-form>
       </v-card-text>
       <v-card-title class="justify-center caption">
-        <div class="mx-4 align-self-center">Don't have an account?</div>
+        <div class="mx-4 align-self-center">Still don't have an account?</div>
         <div class="mx-4 align-self-center">
           <v-btn color="primary" text :to="registerRoute">Register</v-btn>
         </div>

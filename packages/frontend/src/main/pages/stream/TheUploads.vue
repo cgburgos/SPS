@@ -21,21 +21,6 @@
     </portal>
     <v-row>
       <v-col cols="12">
-        <section-card>
-          <v-card-text>
-            Speckle can now process files and store them as a commit (snapshot). You can
-            then access it from the Speckle API, and receive it in other applications.
-            Current supported formats are: IFC, STL, MTL and OBJ. Thanks to the Open
-            Source
-            <a
-              href="https://ifcjs.github.io/info/docs/Guide/web-ifc/Introduction"
-              target="_blank"
-            >
-              IFC.js Project
-            </a>
-            for making this possible.
-          </v-card-text>
-        </section-card>
         <v-alert
           v-if="stream && (stream.role === 'stream:reviewer' || !stream.role)"
           type="warning"

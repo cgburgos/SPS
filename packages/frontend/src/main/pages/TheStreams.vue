@@ -1,7 +1,7 @@
 <template>
   <div>
     <portal v-if="canRenderToolbarPortal" to="toolbar">
-      <span class="font-weight-bold mr-2">Your Streams</span>
+      <span class="font-weight-bold mr-2">Your Projects</span>
       <span class="caption">({{ streams ? streams.totalCount : '...' }})</span>
       <div class="d-none d-md-inline-block">
         <v-btn-toggle v-model="streamFilter" tile color="primary" group mandatory>
@@ -65,14 +65,14 @@
       <v-col cols="12" sm="6" md="6" lg="4" xl="3">
         <infinite-loading :identifier="infiniteId" class="" @infinite="infiniteHandler">
           <div slot="no-more">
-            <v-card class="pa-4">
-              The end - no more streams to display.
+            <v-card class="pa-4" flat style="border: 1px solid #d2dad3">
+              No More Projects
               {{ streamFilter !== 1 ? 'Remove filters to see more.' : '' }}
             </v-card>
           </div>
           <div slot="no-results">
-            <v-card class="pa-4">
-              The end - no more streams to display.
+            <v-card class="pa-4" flat style="border: 1px solid #d2dad3">
+              No More Projects
               {{ streamFilter !== 1 ? 'Remove filters to see more.' : '' }}
             </v-card>
           </div>

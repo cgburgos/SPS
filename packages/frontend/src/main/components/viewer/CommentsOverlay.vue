@@ -25,87 +25,7 @@
       class="no-mouse"
     >
       <!-- Comment bubbles -->
-      <div
-        v-for="comment in activeComments"
-        v-show="isVisible(comment)"
-        :id="`comment-${comment.id}`"
-        :key="comment.id"
-        :ref="`comment-${comment.id}`"
-        :class="`comment-bubble absolute-pos rounded-xl no-mouse `"
-        :style="` z-index:${comment.expanded ? '20' : '10'}; ${
-          hasExpandedComment &&
-          !comment.expanded &&
-          !comment.hovered &&
-          !comment.bouncing
-            ? 'opacity: 0.1;'
-            : 'opacity: 1;'
-        }`"
-        @mouseenter="comment.hovered = true"
-        @mouseleave="comment.hovered = false"
-      >
-        <div class="" style="pointer-events: none">
-          <div class="d-flex align-center" style="pointer-events: none">
-            <v-btn
-              v-show="!($vuetify.breakpoint.xs && comment.expanded)"
-              :ref="`comment-button-${comment.id}`"
-              small
-              icon
-              :class="`elevation-5 pa-0 ma-0 mouse ${
-                getLeadingEmoji(comment) && !comment.expanded
-                  ? 'emoji-btn transparent elevation-0'
-                  : ''
-              }
-              ${
-                (comment.expanded || comment.bouncing || isUnread(comment)) &&
-                !commentSlideShow
-                  ? 'dark white--text primary'
-                  : 'background'
-              }`"
-              @click="
-                comment.expanded ? collapseComment(comment) : expandComment(comment)
-              "
-            >
-              <template v-if="!getLeadingEmoji(comment)">
-                <v-icon v-if="!comment.expanded" x-small class="">mdi-comment</v-icon>
-              </template>
-              <template v-else-if="!comment.expanded">
-                <span class="text-h5">
-                  {{ getLeadingEmoji(comment) }}
-                </span>
-              </template>
-              <v-icon v-if="comment.expanded" x-small class="">mdi-close</v-icon>
-            </v-btn>
-            <v-slide-x-transition>
-              <div
-                v-if="comment.hovered && !comment.expanded"
-                style="position: absolute; left: 30px; width: max-content"
-                class="rounded-xl primary white--text px-2 ml-1 caption"
-              >
-                <timeago
-                  :datetime="comment.updatedAt"
-                  class="font-italic mr-2"
-                ></timeago>
-                <v-icon x-small class="white--text">mdi-comment-outline</v-icon>
-                {{ comment.replies.totalCount + 1 }}
-                <v-icon v-if="comment.data.filters" x-small class="white--text">
-                  mdi-filter-variant
-                </v-icon>
-                <v-icon v-if="comment.data.sectionBox" x-small class="white--text">
-                  mdi-scissors-cutting
-                </v-icon>
-              </div>
-            </v-slide-x-transition>
-          </div>
-          <!-- <v-btn
-            v-if="comment.expanded && commentSlideShow"
-            small
-            icon
-            class="pa-0 ma-0 mouse background"
-          >
-            <v-icon x-small>mdi-arrow-right</v-icon>
-          </v-btn> -->
-        </div>
-      </div>
+
       <!-- Comment Threads -->
       <div
         v-for="comment in activeComments"
@@ -568,35 +488,7 @@ export default {
       // const cam = this.viewer.cameraHandler.activeCam.camera
       // cam.updateProjectionMatrix()
       for (const comment of this.localComments) {
-        // get html elements
-        const commentEl = this.$refs[`comment-${comment.id}`][0]
-        const card = this.$refs[`commentcard-${comment.id}`][0]
-
-        if (!commentEl) continue
-
-        const location = new THREE.Vector3(
-          comment.data.location.x,
-          comment.data.location.y,
-          comment.data.location.z
-        )
-        const projectionResult = this.viewer.query({
-          point: location,
-          operation: 'Project'
-        })
-        const commentLocation = this.viewer.Utils.NDCToScreen(
-          projectionResult.x,
-          projectionResult.y,
-          this.$refs.parent.clientWidth,
-          this.$refs.parent.clientHeight
-        )
-
-        // location.project(cam)
-
-        // const commentLocation = new THREE.Vector3(
-        //   (location.x * 0.5 + 0.5) * this.$refs.parent.clientWidth,
-        //   (location.y * -0.5 + 0.5) * this.$refs.parent.clientHeight,
-        //   0
-        // )
+        const commentLocation = new THREE.Vector3(location.x, location.y, 0)
 
         let tX = commentLocation.x - 20
         let tY = commentLocation.y - 20
@@ -634,50 +526,11 @@ export default {
           tY = this.$refs.parent.clientHeight - paddingYBottom
         }
 
-        commentEl.style.top = `${tY}px`
-        commentEl.style.left = `${tX}px`
-
-        const maxHeight = this.$refs.parent.clientHeight - paddingYTop - paddingYBottom
-
-        card.style.maxHeight = `${maxHeight}px`
-
-        if (tX > this.$refs.parent.clientWidth - (paddingX + 50 + card.scrollWidth)) {
-          tX = this.$refs.parent.clientWidth - (paddingX + 50 + card.scrollWidth)
-        }
-        card.style.left = `${tX + 40}px`
-        // card.style.right = '0px'
-
-        let cardTop = paddingYTop
-
-        if (card.scrollHeight > maxHeight) {
-          card.style.top = `${cardTop}px`
-        } else {
-          cardTop = tY - card.scrollHeight / 2 + 15
-
-          // top clip
-          if (cardTop < paddingYTop) cardTop = paddingYTop
-
-          const cardBottom = cardTop + card.clientHeight
-          const maxBottom = this.$refs.parent.clientHeight - 45
-
-          // bottom clip
-          if (cardBottom > maxBottom) {
-            cardTop -= (cardBottom - maxBottom) / 2
-            cardTop = this.$refs.parent.clientHeight - card.clientHeight - 45
-          }
-
-          if (this.$vuetify.breakpoint.xs && !this.commentSlideShow)
-            cardTop = paddingYTop
-          card.style.top = `${cardTop}px`
-        }
         /** Just as an example */
-        const occlusionRes = this.viewer.query({
-          point: location,
-          tolerance: 0.001,
-          operation: 'Occlusion'
-        })
-        const opacity = occlusionRes.occluder === null ? '1.0' : '0.25'
-        commentEl.style.opacity = opacity
+        // const occlusionRes = this.viewer.query({
+        //   point: location,
+        //   tolerance: 0.001,
+        //   operation: 'Occlusion'
       }
     },
     bounceComment(id) {

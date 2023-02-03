@@ -21,6 +21,9 @@ export function useAllStreamBranches(streamId: Ref<string>) {
     () => branchesResult.value?.stream?.branches?.items || []
   )
 
+  // const localBranchesCommits = computed(
+  //   () => branchesResult.value?.stream?.branches?.items?.commits || []
+  // )
   const totalBranchCount = computed(
     () => branchesResult.value?.stream?.branches?.totalCount || 0
   )

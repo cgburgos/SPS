@@ -10,20 +10,23 @@
       <v-img
         class="hover-tada mt-2"
         width="20"
-        src="@/assets/specklebrick.png"
+        aspect-ratio="1"
+        src="@/assets/UNSFull_Gray.png"
         style="display: inline-block"
       />
     </router-link>
     <router-link to="/" class="text-decoration-none ml-9">
-      <span class="pb-4"><b>Speckle</b></span>
+      <span class="pb-4">
+        <b>{{ ServerPack.projectName }}</b>
+      </span>
     </router-link>
     <div
       v-if="serverInfo"
-      v-tooltip="`Managed by ${serverInfo.company}`"
+      v-tooltip="`Managed by R+I Program`"
       class="caption ml-1 text-truncate grey--text"
       style="opacity: 0.7"
     >
-      {{ serverInfo.version }}
+      {{ ServerPack.displayVersion }}
     </div>
     <div class="flex-grow-1 text-right">
       <v-btn v-tooltip="'Close sidebar'" icon small @click="$emit('hide-drawer')">
@@ -35,11 +38,18 @@
 <script>
 import { mainServerInfoQuery } from '@/graphql/server'
 
+import ServerPackage from '../../../../../package.json'
+
 export default {
   props: { shadow: { type: Boolean, default: false } },
   apollo: {
     serverInfo: {
       query: mainServerInfoQuery
+    }
+  },
+  data() {
+    return {
+      ServerPack: ServerPackage
     }
   }
 }

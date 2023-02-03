@@ -13,7 +13,7 @@
         flat
         hide-details
         hide-no-data
-        placeholder="Search for a stream"
+        placeholder="Search for a Project"
         item-text="name"
         item-value="id"
         return-object

@@ -17,31 +17,35 @@
           <v-icon small class>mdi-arrow-left-drop-circle</v-icon>
         </v-list-item-icon>
         <v-list-item-content>
-          <v-list-item-title class="font-weight-bold">Streams</v-list-item-title>
+          <v-list-item-title class="font-weight-bold">Projects</v-list-item-title>
         </v-list-item-content>
       </v-list-item>
-      <div class="caption px-3 my-4">
-        <div class="simple-scrollbar" style="max-height: 100px; overflow-y: auto">
-          <span v-if="stream && stream.description">
-            {{ stream.description }}
-          </span>
-          <span v-else class="font-italic">No description provided</span>
-        </div>
-        <router-link
-          v-if="stream.role === 'stream:owner'"
-          :to="`/streams/${$route.params.streamId}/settings`"
-          class="text-decoration-none"
-        >
-          Edit
-        </router-link>
-      </div>
-      <v-subheader>STREAM MENU</v-subheader>
+
+      <v-subheader>PROJECT MENU</v-subheader>
       <v-list-item link exact :to="`/streams/${stream.id}`">
         <v-list-item-icon>
           <v-icon small>mdi-home</v-icon>
         </v-list-item-icon>
         <v-list-item-content>
-          <v-list-item-title>Stream Home</v-list-item-title>
+          <v-list-item-title>Project Home</v-list-item-title>
+        </v-list-item-content>
+      </v-list-item>
+      <v-list-item
+        v-if="stream.role !== 'stream:reviewer'"
+        v-tooltip.bottom="'Create a new branch to help categorise your commits.'"
+        link
+        @click="newBranchDialog = true"
+      >
+        <v-list-item-icon>
+          <v-icon small style="padding-top: 10px" class="primary--text">
+            mdi-plus-box
+          </v-icon>
+        </v-list-item-icon>
+        <v-list-item-content>
+          <v-list-item-title>New Branch</v-list-item-title>
+          <v-list-item-subtitle class="caption">
+            Create a new branch to help categorise your commits.
+          </v-list-item-subtitle>
         </v-list-item-content>
       </v-list-item>
 
@@ -51,100 +55,145 @@
           <v-list-item-icon>
             <v-icon small>mdi-source-branch</v-icon>
           </v-list-item-icon>
-          <v-list-item-title>Branches ({{ totalBranchCount }})</v-list-item-title>
+          <v-list-item-title>Branches ({{ totalBranchCount - 1 }})</v-list-item-title>
         </template>
         <!-- <v-divider class="mb-1"></v-divider> -->
-        <v-list-item
-          v-if="stream.role !== 'stream:reviewer'"
-          v-tooltip.bottom="'Create a new branch to help categorise your commits.'"
-          link
-          @click="newBranchDialog = true"
-        >
-          <v-list-item-icon>
-            <v-icon small style="padding-top: 10px" class="primary--text">
-              mdi-plus-box
-            </v-icon>
-          </v-list-item-icon>
-          <v-list-item-content>
-            <v-list-item-title>New Branch</v-list-item-title>
-            <v-list-item-subtitle class="caption">
-              Create a new branch to help categorise your commits.
-            </v-list-item-subtitle>
-          </v-list-item-content>
-        </v-list-item>
 
         <div v-if="!loading">
           <template v-for="(item, i) in groupedBranches">
-            <v-list-item
-              v-if="item.type === 'item'"
-              :key="i"
-              :to="`/streams/${stream.id}/branches/${item.name}`"
-              exact
+            <div
+              :key="Date.now() + i"
+              style="
+                display: flex;
+                flex-direction: row;
+                align-content: center;
+                justify-content: flex-start;
+                align-items: center;
+                gap: 20px;
+                padding: 0px;
+                margin: 0px;
+                margin-top: -40px;
+                max-height: 50px;
+                transform: translate(0px, 53px);
+              "
             >
-              <v-list-item-icon>
-                <v-icon v-if="item.name !== 'main'" small style="padding-top: 10px">
-                  mdi-source-branch
-                </v-icon>
-                <v-icon v-else small style="padding-top: 10px" class="primary--text">
-                  mdi-star
-                </v-icon>
-              </v-list-item-icon>
-              <v-list-item-content>
-                <v-list-item-title>
-                  {{ item.displayName }} ({{ item.commits.totalCount }})
-                </v-list-item-title>
-                <v-list-item-subtitle class="caption">
-                  {{ item.description ? item.description : 'no description' }}
-                </v-list-item-subtitle>
-              </v-list-item-content>
-            </v-list-item>
+              <div style="height: 40px; transform: translate(10px, 0px)">
+                <v-icon medium class="primary--text">mdi-chevron-down</v-icon>
+              </div>
+              <div>
+                <h5 class="text--text">{{ item.displayName }}</h5>
+                <p class="text--text caption">{{ item.branches }} Branches</p>
+              </div>
+            </div>
+
+            <!-- HERE IS THE CONTROL  -->
             <v-list-group
-              v-else
               :key="i"
               sub-group
               :value="item.expand"
               prepend-icon=""
               :group="item.name"
+              style="
+                transform: translate(-40px);
+                /* border-bottom: 1px #d2dad3 solid; */
+                padding: 0;
+                width: 340px;
+              "
             >
-              <template #activator>
+              <template>
                 <v-list-item style="overflow: visible">
-                  <v-list-item-icon style="position: relative; left: -26px">
+                  <!-- <v-list-item-icon style="position: relative; left: -8px">
                     <v-icon style="padding-top: 10px">
                       {{ item.expand ? 'mdi-chevron-down' : 'mdi-chevron-down' }}
                     </v-icon>
                   </v-list-item-icon>
-                  <v-list-item-content style="position: relative; left: -8px">
-                    <v-list-item-title>{{ item.name }}</v-list-item-title>
+                  <v-list-item-content style="position: relative; left: -20px">
+                    <v-list-item-title>
+                      {{ item.displayName }}
+                    </v-list-item-title>
                     <v-list-item-subtitle class="caption">
-                      {{ item.children.length }} branches
-                    </v-list-item-subtitle>
+                      {{ item.branches }} Branches
+                      {{ item.children }}
+                    </v-list-item-subtitle> -->
+                  <v-list-item-icon style="position: relative; left: -8px">
+                    <v-icon style="padding-top: 10px"></v-icon>
+                  </v-list-item-icon>
+                  <v-list-item-content
+                    style="position: relative; left: -20px; width: 350px"
+                  >
+                    <v-list-item-title></v-list-item-title>
+                    <v-list-item-subtitle class="caption"></v-list-item-subtitle>
+                    <!-- HERE GOES THE NESTED ITEMS -->
+                    <template v-for="(subitem, x) in item.children">
+                      <v-list-group
+                        :key="x"
+                        :value="subitem.expand"
+                        prepend-icon=""
+                        :group="subitem.ori"
+                        style="
+                          transform: translate(-0px, -15px);
+                          border: 1px solid #d2dad3;
+                          border-radius: 10px;
+                          margin-top: 10px;
+                          max-width: 100%;
+                        "
+                      >
+                        <template #activator>
+                          <v-list-item
+                            style="
+                              overflow: visible;
+                              /* background-color: #e3e3e3; */
+                              min-width: 150%;
+                              transform: translate(-25px, -0px);
+                            "
+                          >
+                            <v-list-item-content
+                              style="position: relative; left: -16px"
+                            >
+                              <v-list-item-title>
+                                {{ subitem.displayOri }}
+                              </v-list-item-title>
+                              <v-list-item-subtitle class="caption">
+                                {{ subitem.children.length }} Branches
+                              </v-list-item-subtitle>
+                            </v-list-item-content>
+                          </v-list-item>
+                        </template>
+                        <v-list-item
+                          v-for="(kid, j) in subitem.children"
+                          :key="j"
+                          :to="`/streams/${stream.id}/branches/${kid.name}`"
+                          exact
+                          style="padding-left: 5px"
+                        >
+                          <v-list-item-icon>
+                            <v-icon small style="padding-top: 10px">
+                              mdi-source-branch
+                            </v-icon>
+                          </v-list-item-icon>
+                          <v-list-item-content style="position: relative; left: -12px">
+                            <v-list-item-title>
+                              {{ kid.displayName }} ({{ kid.commits.totalCount }})
+                            </v-list-item-title>
+                            <v-list-item-subtitle class="caption">
+                              <v-icon small>mdi-source-commit</v-icon>
+                              {{ kid.displayCommit }}
+                            </v-list-item-subtitle>
+                          </v-list-item-content>
+                        </v-list-item>
+                      </v-list-group>
+                    </template>
+                    <!-- HERE ENDS -->
                   </v-list-item-content>
                 </v-list-item>
               </template>
-              <v-list-item
-                v-for="(kid, j) in item.children"
-                :key="j"
-                :to="`/streams/${stream.id}/branches/${kid.name}`"
-                exact
-              >
-                <v-list-item-icon>
-                  <v-icon small style="padding-top: 10px">mdi-source-branch</v-icon>
-                </v-list-item-icon>
-                <v-list-item-content>
-                  <v-list-item-title>
-                    {{ kid.displayName }} ({{ kid.commits.totalCount }})
-                  </v-list-item-title>
-                  <v-list-item-subtitle class="caption">
-                    {{ kid.description ? kid.description : 'no description' }}
-                  </v-list-item-subtitle>
-                </v-list-item-content>
-              </v-list-item>
             </v-list-group>
+            <v-divider class="mb-2" />
           </template>
         </div>
 
         <v-skeleton-loader v-else type="list-item-two-line" />
-        <v-divider class="mb-2" />
+        <!-- <v-divider class="mb-2" /> -->
       </v-list-group>
 
       <!-- Comments  -->
@@ -159,7 +208,7 @@
 
       <!-- Other menu items go here -->
 
-      <v-list-item link :to="`/streams/${stream.id}/globals`">
+      <!-- <v-list-item link :to="`/streams/${stream.id}/globals`">
         <v-list-item-icon>
           <v-icon small>mdi-earth</v-icon>
         </v-list-item-icon>
@@ -167,25 +216,25 @@
           <v-list-item-title>Globals</v-list-item-title>
         </v-list-item-content>
       </v-list-item>
-      <portal-target name="stream-globals-nav" />
+      <portal-target name="stream-globals-nav" /> -->
 
-      <v-list-item link :to="`/streams/${stream.id}/uploads`">
+      <!-- <v-list-item link :to="`/streams/${stream.id}/uploads`">
         <v-list-item-icon>
           <v-icon small>mdi-arrow-up</v-icon>
         </v-list-item-icon>
         <v-list-item-content>
           <v-list-item-title>Import File</v-list-item-title>
         </v-list-item-content>
-      </v-list-item>
+      </v-list-item> -->
 
-      <v-list-item link :to="`/streams/${stream.id}/webhooks`">
+      <!-- <v-list-item link :to="`/streams/${stream.id}/webhooks`">
         <v-list-item-icon>
           <v-icon small>mdi-webhook</v-icon>
         </v-list-item-icon>
         <v-list-item-content>
           <v-list-item-title>Webhooks</v-list-item-title>
         </v-list-item-content>
-      </v-list-item>
+      </v-list-item> -->
 
       <v-list-item link :to="`/streams/${stream.id}/collaborators`">
         <v-list-item-icon>
@@ -226,6 +275,7 @@ import {
 import { StreamEvents } from '@/main/lib/core/helpers/eventHubHelper'
 import { useRoute } from '@/main/lib/core/composables/router'
 import { useAllStreamBranches } from '@/main/lib/stream/composables/branches'
+import { reservedBranchNamesArray } from '../utils/streamDataManager'
 
 export default {
   components: {
@@ -243,6 +293,7 @@ export default {
     const streamId = computed(() => route.params.streamId)
     const { localBranches, refetchBranches, totalBranchCount, branchesLoading } =
       useAllStreamBranches(streamId)
+
     return {
       localBranches,
       refetchBranches,
@@ -253,44 +304,101 @@ export default {
   data() {
     return {
       branchMenuOpen: false,
-      newBranchDialog: false
+      newBranchDialog: false,
+      archTabOpen: false
     }
   },
   computed: {
     groupedBranches() {
       const branches = this.localBranches
+
       const items = []
-      for (const b of branches) {
-        if (b.name === 'globals') continue
-        const parts = b.name.split('/')
-        if (parts.length === 1) {
-          items.push({ ...b, displayName: b.name, type: 'item', children: [] })
-        } else {
-          let existing = items.find((i) => i.name === parts[0] && i.type === 'group')
-          if (!existing) {
-            existing = { name: parts[0], type: 'group', children: [], expand: false }
-            items.push(existing)
-          }
-          existing.children.push({
-            ...b,
-            displayName: parts.slice(1).join('/'),
-            type: 'item'
-          })
-          if (this.$route.path.includes(b.name)) existing.expand = true
+
+      const validBranches = branches.filter(
+        (item) => !reservedBranchNamesArray.includes(item.name)
+      )
+      const allSpecialties = validBranches
+        .filter((item) => item.name !== 'main')
+        .map((item) => item.name.split('/')[0])
+      const uniqueSpecialties = [...new Set(allSpecialties)]
+
+      uniqueSpecialties.forEach((specialty) => {
+        const specialtyBranches = branches.filter(
+          (branch) => branch.name.split('/')[0] === specialty
+        )
+        let displaySpecialty = ''
+        try {
+          displaySpecialty = [
+            specialty.charAt(0).toUpperCase(),
+            specialty.slice(1)
+          ].join('')
+        } catch {
+          displaySpecialty = ''
         }
-      }
-      const sorted = items.sort((a, b) => {
-        const nameA = a.name.toLowerCase()
-        const nameB = b.name.toLowerCase()
-        if (nameA < nameB) return -1
-        if (nameA > nameB) return 1
-        return 0
+        if (displaySpecialty.length <= 3) {
+          displaySpecialty = displaySpecialty.toUpperCase()
+        }
+        const item = {
+          name: specialty,
+          displayName: displaySpecialty,
+          type: 'group',
+          children: [],
+          expandItem: false,
+          branches: 0
+        }
+        const allOrigins = specialtyBranches
+          .filter((item) => item.name !== 'main')
+          .map((item) => item.name.split('/')[1])
+        const uniqueOrigins = [...new Set(allOrigins)]
+
+        const originArray = uniqueOrigins.map((origin) => ({
+          ori: origin,
+          expand: false,
+          displayOri: [origin.charAt(0).toUpperCase(), origin.slice(1)].join(''),
+          children: []
+        }))
+
+        item.children = originArray
+        items.push(item)
       })
 
-      return [
-        ...sorted.filter((it) => it.name === 'main'),
-        ...sorted.filter((it) => it.name !== 'main')
-      ]
+      validBranches.forEach((branch) => {
+        const parts = branch.name.split('/')
+
+        let lastCommit = 'No Commits Yet'
+        if (branch.commits.items[0] !== undefined) {
+          lastCommit = `${branch.commits.items[0].message}`
+        }
+
+        const currSpecialty = items.find((item) => item.name === parts[0])
+        const currOrigin = currSpecialty.children.find((item) => item.ori === parts[1])
+
+        const branchObj = {
+          ...branch,
+          // displayName: parts.slice(1).join('/'),
+          displayName: parts[2],
+          type: 'item',
+          //TODO MAYBE INCORPORATE HEALTH
+          displayOri: [parts[1].charAt(0).toUpperCase(), parts[1].slice(1)].join(''),
+          ori: parts[1],
+          displayCommit: lastCommit
+        }
+
+        currOrigin.children.push(branchObj)
+        if (this.$route.path.includes(branch.name)) currOrigin.expand = true
+        if (this.$route.path.includes(branch.name)) currSpecialty.expandItem = true
+      })
+
+      items.forEach((item) => {
+        let branchCount = 0
+        const allOrigins = item.children
+        allOrigins.forEach((origin) => {
+          branchCount += origin.children.length
+        })
+        item.branches = branchCount
+      })
+
+      return items
     },
     sortedBranches() {
       return [

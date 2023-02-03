@@ -1,4 +1,4 @@
-// $heading-font-family: 'Space Grotesk';
+// $heading-font-family: 'Mallory';
 
 $primary-base: var(--v-primary-base);
 $primary-darken: var(--v-secondary-base);
@@ -8,6 +8,10 @@ $primary-gradient: linear-gradient(0deg, $primary-darken 0%, $primary-base 40%);
 // https://github.com/vuetifyjs/vuetify/issues/1197
 html {
   overflow-y: auto !important;
+}
+
+v-btn {
+  box-shadow: none;
 }
 
 @mixin speckle-gradient-bg {
@@ -23,13 +27,13 @@ html {
 .background-light {
   background: #8e9eab;
   background: -webkit-linear-gradient(to top right, #eeeeee, #c8e8ff) !important;
-  background: linear-gradient(to top right, #ffffff, #c8e8ff) !important;
+  background: linear-gradient(to top right, #ffffff, #ffffff) !important;
 }
 
 .background-dark {
-  background: #141e30;
-  background: -webkit-linear-gradient(to top left, #243b55, #141e30) !important;
-  background: linear-gradient(to top left, #243b55, #141e30) !important;
+  background: #ffffff;
+  background: -webkit-linear-gradient(to top left #7a8f85, #ffffff) !important;
+  background: linear-gradient(to top left, #ffffff, #ffffff) !important;
 }
 
 // TADAs

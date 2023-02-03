@@ -8,6 +8,8 @@
   "engines": {
     "node": "^18.12.1"
   },
+  "displayVersion": "Alpha Dev",
+  "projectName": "UNSpeckle",
   "scripts": {
     "build": "yarn workspaces foreach -ptv run build",
     "build:public": "yarn workspaces foreach -ptv --no-private run build",

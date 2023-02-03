@@ -103,6 +103,7 @@
                 dark
                 small
                 :disabled="isEditDisabled"
+                class="elevation-0"
                 @click="deleteDialog = true"
               >
                 <v-icon>mdi-delete-forever</v-icon>

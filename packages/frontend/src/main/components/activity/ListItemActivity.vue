@@ -77,7 +77,8 @@
         <v-card
           v-else-if="lastActivity.resourceType === 'stream' && stream"
           class="activity-card"
-          :flat="$vuetify.theme.dark"
+          flat
+          style="border: 1px solid #d2dad3; border-radius: 10px"
         >
           <v-card-text class="pa-5 body-1">
             <v-container>

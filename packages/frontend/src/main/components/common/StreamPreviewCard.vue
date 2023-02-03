@@ -2,8 +2,13 @@
   <v-hover v-slot="{ hover }">
     <v-card
       class="rounded-lg"
-      :elevation="hover ? 10 : 1"
-      style="transition: all 0.2s ease-in-out"
+      :elevation="hover ? 1 : 0"
+      :style="`${
+        hover
+          ? 'border: 1px solid #d2dad3; max-width: 250px; background-color: #f1f2f0; transition: all 0.2s ease-in-out;'
+          : 'border: 1px solid #d2dad3; max-width: 250px; transition: all 0.2s ease-in-out;'
+      }`"
+      style="transition: all 0.2s ease-in-out; border: 1px solid #d2dad3"
     >
       <router-link :to="`/streams/${stream.id}`">
         <preview-image

@@ -13,7 +13,7 @@
             v-if="showImage"
             class="d-flex flex-column justify-space-between align-center mb-10"
           >
-            <v-img contain max-height="200" src="@/assets/emptybox.png"></v-img>
+            <v-img contain max-height="100" src="@/assets/UNSFull_Gray.png"></v-img>
           </div>
           <div class="text-center mb-2 space-grotesk">
             <slot name="default"></slot>
@@ -21,7 +21,7 @@
           <v-container style="max-width: 500px">
             <slot name="actions">
               <v-list rounded class="transparent">
-                <v-list-item
+                <!-- <v-list-item
                   v-if="user && !hasManager"
                   link
                   class="primary mb-4"
@@ -39,7 +39,7 @@
                       applications and start sending data in no time!
                     </p>
                   </v-list-item-content>
-                </v-list-item>
+                </v-list-item> -->
                 <v-list-item
                   v-if="user && !hasManager"
                   :href="`speckle://accounts?add_server_account=${rootUrl}`"
@@ -52,13 +52,13 @@
                   <v-list-item-content>
                     <v-list-item-title>Authenticate</v-list-item-title>
                     <p class="caption pb-0 mb-0">
-                      Link up your Speckle account with the desktop connectors you have
+                      Link up your UNStudio account with the desktop connectors you have
                       installed.
                     </p>
                   </v-list-item-content>
                 </v-list-item>
 
-                <v-list-item
+                <!-- <v-list-item
                   v-if="hasManager"
                   link
                   :class="`${hasManager ? 'primary' : ''} mb-4`"
@@ -75,8 +75,8 @@
                       Learn how to send data from various software.
                     </v-list-item-subtitle>
                   </v-list-item-content>
-                </v-list-item>
-
+                </v-list-item> -->
+                <!-- 
                 <v-list-item
                   v-if="hasManager"
                   link
@@ -93,9 +93,9 @@
                       Tips, tricks and how-to guides.
                     </v-list-item-subtitle>
                   </v-list-item-content>
-                </v-list-item>
+                </v-list-item> -->
 
-                <v-list-item
+                <!-- <v-list-item
                   v-if="hasManager"
                   link
                   :class="`grey ${$vuetify.theme.dark ? 'darken-4' : 'lighten-4'} mb-4`"
@@ -111,9 +111,9 @@
                       Documentation and training material for all connectors.
                     </v-list-item-subtitle>
                   </v-list-item-content>
-                </v-list-item>
+                </v-list-item> -->
 
-                <v-list-item
+                <!-- <v-list-item
                   link
                   :class="`grey ${$vuetify.theme.dark ? 'darken-4' : 'lighten-4'} mb-4`"
                   href="https://speckle.community"
@@ -128,7 +128,7 @@
                       Need help? We're here for you!
                     </v-list-item-subtitle>
                   </v-list-item-content>
-                </v-list-item>
+                </v-list-item> -->
               </v-list>
             </slot>
             <slot name="append"></slot>

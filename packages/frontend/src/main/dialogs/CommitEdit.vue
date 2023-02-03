@@ -16,6 +16,14 @@
         <v-container>
           <v-row>
             <v-col cols="12" class="pb-0">
+              <v-text-field v-model="initialDate" label="Date" disabled></v-text-field>
+              <v-combobox
+                v-model="displayCommitType"
+                :items="displayValidCommits"
+                label="Commit Type"
+                validate-on-blur
+                required
+              ></v-combobox>
               <v-text-field
                 v-model="message"
                 label="Message"
@@ -23,6 +31,11 @@
                 required
                 autofocus
               ></v-text-field>
+              <p v-if="valid" class="caption">
+                <b>Commit code:</b>
+                {{ `${initialDate}_${transformedType}_${message}` }}
+              </p>
+
               <p>Move this commit to a different branch:</p>
               <v-select
                 v-model="newBranch"
@@ -95,6 +108,7 @@ import { gql } from '@apollo/client/core'
 import { useRoute } from '@/main/lib/core/composables/router'
 import { useAllStreamBranches } from '@/main/lib/stream/composables/branches'
 import { computed } from 'vue'
+import { CommitTypeObjects } from '../utils/streamDataManager'
 
 export default {
   props: {
@@ -113,10 +127,21 @@ export default {
     }
   },
   data() {
+    const existingDate = this.stream.commit.message.split('_')[0]
+    const existingType = this.stream.commit.message.split('_')[1]
+    const fullNameType = CommitTypeObjects.find(
+      (type) => type.ShortName === existingType
+    )
+    const displayValidTypesArray = CommitTypeObjects.map((item) => item.CompleteName)
+
     return {
       showDeleteDialog: false,
       newBranch: this.stream.commit.branchName,
-      message: this.stream.commit.message,
+      message: this.stream.commit.message.split('_')[2],
+      displayValidCommits: displayValidTypesArray,
+      displayCommitType: fullNameType.CompleteName,
+      commitTypes: fullNameType.ShortName,
+      initialDate: existingDate,
       loading: false,
       commitIdConfirmation: '',
       commit: this.stream.commit,
@@ -134,6 +159,11 @@ export default {
     },
     isLoading() {
       return this.loading || this.branchesLoading
+    },
+    transformedType() {
+      return CommitTypeObjects.find(
+        (type) => type.CompleteName === this.displayCommitType
+      ).ShortName
     }
   },
   methods: {
@@ -148,9 +178,12 @@ export default {
       let messageChanged = false
       let branchChanged = false
 
-      if (this.commit.message !== this.message) {
+      const currMessage = `${this.initialDate}_${this.transformedType}_${this.message}`
+      console.log(currMessage)
+
+      if (this.commit.message !== currMessage) {
         messageChanged = true
-        myCommit.message = this.message
+        myCommit.message = currMessage
       }
 
       if (this.commit.branchName !== this.newBranch) {
@@ -174,7 +207,7 @@ export default {
           })
         }
       this.loading = false
-      this.commit.message = this.message
+      this.commit.message = currMessage
       this.commit.branchName = this.newBranch
       if (branchChanged) {
         this.$eventHub.$emit('notification', {

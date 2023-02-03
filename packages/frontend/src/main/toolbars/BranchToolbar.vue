@@ -26,9 +26,7 @@
           {{ stream.branch.name }}
         </router-link>
       </div>
-      <div class="text-truncate d-none d-md-inline caption px-2">
-        {{ stream.branch.description }}
-      </div>
+
       <div class="text-truncate caption">
         <v-icon style="font-size: 11px">mdi-source-commit</v-icon>
         {{ stream.branch.commits.totalCount }}

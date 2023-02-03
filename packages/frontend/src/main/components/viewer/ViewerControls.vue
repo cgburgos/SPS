@@ -1,9 +1,14 @@
 <template>
   <div>
     <v-card
-      class="elevation-5 rounded-xl pl-3 py-0 d-flex align-center"
+      class="elevation-0 rounded-xl pl-3 py-0 d-flex align-center"
       height="44"
-      style="max-width: 90vw; overflow-x: auto; overflow-y: hidden"
+      style="
+        max-width: 90vw;
+        overflow-x: auto;
+        overflow-y: hidden;
+        border: 1px solid #d2dad3;
+      "
     >
       <v-btn
         v-show="showVisReset"
@@ -16,7 +21,7 @@
         <v-icon small class="mr-2">mdi-eye-off</v-icon>
         Reset Filters
       </v-btn>
-      <v-btn
+      <!-- <v-btn
         v-tooltip="'Viewer Help'"
         :small="small"
         rounded
@@ -25,12 +30,12 @@
         @click="helpDialog = true"
       >
         <v-icon small>mdi-help</v-icon>
-      </v-btn>
+      </v-btn> -->
       <v-dialog v-model="helpDialog" max-width="600">
         <viewer-help @close="helpDialog = false" />
       </v-dialog>
       <!-- disabling ortho mode because comment intersection are f*ed. -->
-      <v-btn
+      <!-- <v-btn
         v-tooltip="`between perspective or ortho camera.`"
         :small="small"
         rounded
@@ -39,7 +44,7 @@
         @click="toggleCamera()"
       >
         <v-icon small>mdi-perspective-less</v-icon>
-      </v-btn>
+      </v-btn> -->
       <v-menu
         :close-on-content-click="false"
         origin="center"

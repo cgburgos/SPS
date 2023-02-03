@@ -219,7 +219,7 @@
           icon
           dark
           large
-          class="elevation-5 primary pa-0 ma-o"
+          class="elevation-0 primary pa-0 ma-o"
           @click="toggleExpand()"
         >
           <v-icon v-if="!expand" dark small>mdi-comment-plus</v-icon>
@@ -537,16 +537,31 @@ export default {
       //   0
       // )
 
-      const projectionResult = this.viewer.query({
+      // const projectionResult = this.viewer.query({
+      //   point: this.location,
+      //   operation: 'Project'
+      // })
+      // const mappedLocation = this.viewer.Utils.NDCToScreen(
+      //   projectionResult.x,
+      //   projectionResult.y,
+      //   this.$refs.parent.clientWidth,
+      //   this.$refs.parent.clientHeight
+      // )
+
+      const projectionResult = {
         point: this.location,
         operation: 'Project'
-      })
-      const mappedLocation = this.viewer.Utils.NDCToScreen(
-        projectionResult.x,
-        projectionResult.y,
-        this.$refs.parent.clientWidth,
-        this.$refs.parent.clientHeight
+      }
+
+      const mappedLocation = new THREE.Vector3(
+        (projectionResult.x * 0.5 + 0.5) * this.$refs.parent.clientWidth -
+          collapsedSize / 2,
+        (projectionResult.y * -0.5 + 0.5) * this.$refs.parent.clientHeight -
+          collapsedSize / 1,
+        0
       )
+      // const mappedLocation = { x: projectionResult.x, y: projectionResult.y }
+
       mappedLocation.x -= collapsedSize / 2
       mappedLocation.y -= collapsedSize / 1
 

@@ -48,7 +48,7 @@
         v-tooltip="'Share this stream/commit'"
         xxxelevation="0"
         rounded
-        class="mr-2 ml-2 px-0 primary"
+        class="mr-2 ml-2 px-0 primary elevation-0"
         @click="shareStream = true"
       >
         <v-icon v-if="!stream.isPublic" small class="mr-1">mdi-lock</v-icon>

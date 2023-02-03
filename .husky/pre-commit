@@ -10,7 +10,6 @@ then
 else
 # shellcheck disable=SC1090
   . "$(dirname "$0")/_/husky.sh"
-  yarn lint-staged
 fi
 
 

@@ -32,7 +32,7 @@
                 @infinite="infiniteHandler"
               >
                 <div slot="no-more">This is all your activity!</div>
-                <div slot="no-results">There are no ctivities to load</div>
+                <div slot="no-results">There are no activities to load</div>
               </infinite-loading>
             </v-timeline>
           </div>
@@ -40,8 +40,8 @@
       </v-col>
       <v-col v-else cols="12">
         <no-data-placeholder v-if="quickUser">
-          <h2>Welcome {{ quickUser.name.split(' ')[0] }}!</h2>
-          <p class="caption">
+          <h2 class="text--text">Welcome {{ quickUser.name.split(' ')[0] }}!</h2>
+          <p class="caption text--text">
             Once you create a stream and start sending some data, your activity will
             show up here.
           </p>
@@ -58,9 +58,9 @@
                   <v-icon>mdi-plus-box</v-icon>
                 </v-list-item-icon>
                 <v-list-item-content>
-                  <v-list-item-title>Create a new stream!</v-list-item-title>
+                  <v-list-item-title>Create a new Project!</v-list-item-title>
                   <v-list-item-subtitle class="caption">
-                    Streams are like folders, or data repositories.
+                    Projects are like folders, or data repositories.
                   </v-list-item-subtitle>
                 </v-list-item-content>
               </v-list-item>

@@ -7,8 +7,9 @@
       floating
       :class="`main-nav-drawer grey ${
         $vuetify.theme.dark ? 'darken-4' : 'lighten-4'
-      } elevation-1`"
+      } elevation-0 flat`"
       :width="navWidth"
+      flat
       style="z-index: 100"
     >
       <div v-show="$route.meta.resizableNavbar" class="nav-resizer"></div>
@@ -16,7 +17,8 @@
       <template #append>
         <div
           :xxxstyle="`${$isMobile() ? 'padding-bottom: 58px' : ''}`"
-          class="elevation-10"
+          class="elevation-0"
+          style="border-top: 1px solid #d2dad3"
         >
           <main-nav-bottom />
         </div>
@@ -25,8 +27,8 @@
 
     <v-app-bar app class="elevation-0 transparent" flat style="margin-top: 4px">
       <v-card
-        class="d-flex flex-grow-1 overflow-hidden align-center elevation-4 rounded-lg"
-        style="height: 48px"
+        class="d-flex flex-grow-1 overflow-hidden align-center elevation-4 rounded-lg flat elevation-0"
+        style="height: 48px; border: 1px solid #d2dad3"
       >
         <div v-if="!drawer">
           <v-app-bar-nav-icon @click.stop="drawer = !drawer">

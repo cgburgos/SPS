@@ -14,7 +14,16 @@
       <!-- <v-btn x-small color="primary">change</v-btn> -->
       <v-menu offset-y>
         <template #activator="{ on, attrs }">
-          <v-btn x-small color="" dark v-bind="attrs" :disabled="disabled" v-on="on">
+          <v-btn
+            x-small
+            color=""
+            dark
+            v-bind="attrs"
+            flat
+            class="elevation-0"
+            :disabled="disabled"
+            v-on="on"
+          >
             Change
           </v-btn>
         </template>

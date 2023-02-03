@@ -13,21 +13,52 @@
     </v-alert>
     <v-form ref="form" v-model="valid" lazy-validation @submit.prevent="updateBranch">
       <v-card-text>
+        <v-combobox
+          v-model="specialty"
+          :items="validSpecialties"
+          label="Specialty"
+          :rules="specialtyRules"
+          validate-on-blur
+          required
+        ></v-combobox>
+        <v-combobox
+          v-model="origin"
+          :items="validOrigin"
+          label="Origin"
+          :rules="originRules"
+          validate-on-blur
+          required
+        ></v-combobox>
+        <!-- <v-text-field
+          v-model="specialty"
+          label="Specialty"
+          :rules="specialtyRules"
+          required
+        ></v-text-field>
         <v-text-field
-          v-model="editableBranch.name"
+          v-model="origin"
+          label="Origin"
+          :rules="originRules"
+          required
+        ></v-text-field> -->
+        <v-text-field
+          v-model="editableBranchName"
           label="Name"
           :rules="nameRules"
           required
         ></v-text-field>
-        <p class="caption">
-          Tip: you can create nested branches by using "/" as a separator in their
-          names. E.g., "mep/stage-1" or "arch/sketch-design".
+        <p v-if="valid" class="caption">
+          <b>Branch code:</b>
+          {{ ` ${specialty}/${origin}/${editableBranchName} ` }}
         </p>
-        <v-textarea
+        <p class="caption">
+          {{ resText }}
+        </p>
+        <!-- <v-textarea
           v-model="editableBranch.description"
           rows="2"
           label="Description"
-        ></v-textarea>
+        ></v-textarea> -->
       </v-card-text>
     </v-form>
     <v-card-actions>
@@ -86,6 +117,12 @@ import isNull from 'lodash/isNull'
 import isUndefined from 'lodash/isUndefined'
 import clone from 'lodash/clone'
 import { StreamEvents } from '@/main/lib/core/helpers/eventHubHelper'
+import {
+  validSpecialtiesArray,
+  validOriginArray,
+  reservedBranchNamesArray,
+  restrictionText
+} from '../utils/streamDataManager'
 
 export default {
   props: {
@@ -96,28 +133,49 @@ export default {
   },
   data() {
     return {
+      resText: restrictionText,
       dialog: false,
       // Cloning to prevent mutation of this.stream.branch
       editableBranch: clone(this.stream.branch),
       initialBranch: clone(this.stream.branch),
+      editableBranchName: clone(this.stream.branch).name.split('/')[2],
+      initialBranchName: clone(this.stream.branch).name.split('/')[2],
       branchNameConfirmation: null,
+      validSpecialties: validSpecialtiesArray,
+      validOrigin: validOriginArray,
       valid: true,
       loading: false,
       showDeleteDialog: false,
+      specialty: clone(this.stream.branch).name.split('/')[0],
+      origin: clone(this.stream.branch).name.split('/')[1],
       nameRules: [
-        (v) => !!v || 'Name is required.',
+        (v) => !!v || 'Need a name too!',
         (v) =>
           !(
             v.startsWith('#') ||
-            v.endsWith('#') ||
             v.startsWith('/') ||
-            v.endsWith('/')
-          ) || 'Branch names cannot start or end with "#" or "/"',
+            v.indexOf('//') !== -1 ||
+            v.indexOf(' ') !== -1
+          ) || 'Branch names cannot contain "#", "/" or white spaces.',
         (v) =>
-          (v && this.allBranchNames.findIndex((e) => e === v) === -1) ||
-          'A branch with this name already exists',
+          (v && reservedBranchNamesArray.findIndex((e) => e === v) === -1) ||
+          'This is a reserved branch name',
         (v) => (v && v.length <= 100) || 'Name must be less than 100 characters',
         (v) => (v && v.length >= 3) || 'Name must be at least 3 characters'
+      ],
+      specialtyRules: [
+        (v) => !!v || 'Specialty needs a name!',
+        (v) =>
+          (v && validSpecialtiesArray.findIndex((e) => e === v) !== -1) ||
+          `The specialty has to be one of the following: ${validSpecialtiesArray.join(
+            ' | '
+          )}`
+      ],
+      originRules: [
+        (v) => !!v || 'Origin needs a name!',
+        (v) =>
+          (v && validOriginArray.findIndex((e) => e === v) !== -1) ||
+          `The origin has to be one of the following: ${validOriginArray.join(' | ')}`
       ],
       isEdit: false,
       pendingDelete: false,
@@ -196,14 +254,16 @@ export default {
     async updateBranch() {
       if (!this.$refs.form.validate()) return
       try {
-        if (this.allBranchNames.indexOf(this.editableBranch.name) !== -1)
+        const newBranchCode =
+          `${this.specialty}/${this.origin}/${this.editableBranchName}`.toLowerCase()
+        if (this.allBranchNames.indexOf(newBranchCode) !== -1)
           throw new Error('Branch already exists. Please choose a different name.')
 
         this.loading = true
         this.$mixpanel.track('Branch Action', { type: 'action', name: 'update' })
 
         const branchId = this.editableBranch.id
-        const newName = this.editableBranch.name
+        const newName = newBranchCode
         const newDescription = this.editableBranch.description
 
         const res = await this.$apollo.mutate({

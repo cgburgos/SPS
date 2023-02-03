@@ -11,7 +11,13 @@ import {
 } from '@/main/lib/auth/utils/postAuthRedirectManager'
 import { reduce } from 'lodash'
 
+import ServerPackage from '../../../../../package.json'
+
 Vue.use(VueRouter)
+
+const HeaderTitle = (name) => {
+  return `${name} | ${ServerPackage.projectName}`
+}
 
 const routes = [
   {
@@ -24,7 +30,7 @@ const routes = [
         path: 'login',
         name: 'Login',
         meta: {
-          title: 'Login | Speckle'
+          title: HeaderTitle('Login')
         },
         component: () => import('@/main/pages/auth/TheLogin.vue')
       },
@@ -32,7 +38,7 @@ const routes = [
         path: 'register',
         name: 'Register',
         meta: {
-          title: 'Register | Speckle'
+          title: HeaderTitle('Register')
         },
         component: () => import('@/main/pages/auth/TheRegistration.vue')
       },
@@ -40,7 +46,7 @@ const routes = [
         path: 'resetpassword',
         name: 'Reset Password',
         meta: {
-          title: 'Reset Password | Speckle'
+          title: HeaderTitle('Reset Password')
         },
         component: () => import('@/main/pages/auth/ResetPasswordRequest.vue')
       },
@@ -48,7 +54,7 @@ const routes = [
         path: 'resetpassword/finalize',
         name: 'Reset Password Finalization',
         meta: {
-          title: 'Reset Password | Speckle'
+          title: HeaderTitle('Reset Password Finalization')
         },
         component: () => import('@/main/pages/auth/ResetPasswordFinalization.vue')
       },
@@ -56,7 +62,7 @@ const routes = [
         path: 'verify/:appId/:challenge',
         name: 'Authorize App',
         meta: {
-          title: 'Authorizing App | Speckle'
+          title: HeaderTitle('Authorize App')
         },
         component: () => import('@/main/pages/auth/AuthorizeApp.vue')
       }
@@ -65,7 +71,7 @@ const routes = [
   {
     path: '/',
     meta: {
-      title: 'Home | Speckle'
+      title: HeaderTitle('Home')
     },
     component: () => import('@/main/layouts/TheMain.vue'),
     children: [
@@ -73,7 +79,7 @@ const routes = [
         path: '',
         name: 'home',
         meta: {
-          title: 'Home | Speckle'
+          title: HeaderTitle('Home')
         },
         component: () => import('@/main/pages/TheFeed.vue')
       },
@@ -81,7 +87,7 @@ const routes = [
         path: '/commits',
         name: 'commits',
         meta: {
-          title: 'Commits | Speckle'
+          title: HeaderTitle('Commits')
         },
         component: () => import('@/main/pages/TheCommits.vue')
       },
@@ -89,7 +95,7 @@ const routes = [
         path: 'streams',
         name: 'streams',
         meta: {
-          title: 'Streams | Speckle'
+          title: HeaderTitle('Login')
         },
         component: () => import('@/main/pages/TheStreams.vue')
       },
@@ -97,14 +103,14 @@ const routes = [
         path: 'streams/favorite',
         name: 'favorite-streams',
         meta: {
-          title: 'Favorite Streams | Speckle'
+          title: HeaderTitle('Favorite Streams')
         },
         component: () => import('@/main/pages/TheFavoriteStreams.vue')
       },
       {
         path: 'streams/:streamId',
         meta: {
-          title: 'Stream | Speckle'
+          title: HeaderTitle('Stream')
         },
         component: () => import('@/main/pages/stream/TheStream.vue'),
         children: [
@@ -112,7 +118,7 @@ const routes = [
             path: '',
             name: 'stream',
             meta: {
-              title: 'Stream | Speckle'
+              title: HeaderTitle('Stream')
             },
             component: () => import('@/main/pages/stream/TheStreamHome.vue')
           },
@@ -125,7 +131,7 @@ const routes = [
             path: 'branches/:branchName*',
             name: 'branch',
             meta: {
-              title: 'Branch | Speckle'
+              title: HeaderTitle('Branch')
             },
             component: () => import('@/main/pages/stream/TheBranch.vue'),
             beforeEnter: (to, from, next) => {
@@ -142,7 +148,7 @@ const routes = [
             path: 'comments/',
             name: 'comments',
             meta: {
-              title: 'Stream Comments | Speckle',
+              title: HeaderTitle('Stream Comments'),
               resizableNavbar: false
             },
             component: () => import('@/main/pages/stream/TheComments.vue')
@@ -151,7 +157,7 @@ const routes = [
             path: 'commits/:resourceId*',
             name: 'commit',
             meta: {
-              title: 'Commit | Speckle',
+              title: HeaderTitle('Commit'),
               resizableNavbar: true,
               hideEmailBanner: true
             },
@@ -165,7 +171,7 @@ const routes = [
             path: 'objects/:resourceId*',
             name: 'objects',
             meta: {
-              title: 'Object | Speckle',
+              title: HeaderTitle('Object'),
               resizableNavbar: true,
               hideEmailBanner: true
             },
@@ -179,7 +185,7 @@ const routes = [
             path: 'collaborators/',
             name: 'collaborators',
             meta: {
-              title: 'Stream Collaborators | Speckle'
+              title: HeaderTitle('Stream Collaborators')
             },
             props: true,
             component: () => import('@/main/pages/stream/TheCollaborators.vue')
@@ -188,7 +194,7 @@ const routes = [
             path: 'settings/',
             name: 'settings',
             meta: {
-              title: 'Stream Settings | Speckle'
+              title: HeaderTitle('Stream Collaborators')
             },
             props: true,
             component: () => import('@/main/pages/stream/TheSettings.vue')
@@ -197,7 +203,7 @@ const routes = [
             path: 'webhooks/',
             name: 'webhooks',
             meta: {
-              title: 'Webhooks | Speckle'
+              title: HeaderTitle('Webhooks')
             },
             props: true,
             component: () => import('@/main/pages/stream/TheWebhooks.vue')
@@ -206,7 +212,7 @@ const routes = [
             path: 'uploads/',
             name: 'uploads',
             meta: {
-              title: 'Stream Uploads | Speckle'
+              title: HeaderTitle('Stream Uploads')
             },
             props: true,
             component: () => import('@/main/pages/stream/TheUploads.vue')
@@ -215,7 +221,7 @@ const routes = [
             path: 'globals/',
             name: 'globals',
             meta: {
-              title: 'Globals | Speckle'
+              title: HeaderTitle('Globals')
             },
             props: true,
             component: () => import('@/main/pages/stream/TheGlobals.vue')
@@ -224,7 +230,7 @@ const routes = [
             path: 'globals/:commitId',
             name: 'previous globals',
             meta: {
-              title: 'Globals | Speckle'
+              title: HeaderTitle('Globals')
             },
             component: () => import('@/main/pages/stream/TheGlobals.vue')
           }
@@ -234,7 +240,7 @@ const routes = [
         path: 'profile',
         name: 'profile',
         meta: {
-          title: 'Your Profile | Speckle'
+          title: HeaderTitle('Your Profile')
         },
         component: () => import('@/main/pages/user/TheProfileSelf.vue')
       },
@@ -242,7 +248,7 @@ const routes = [
         path: 'profile/:userId',
         name: 'user profile',
         meta: {
-          title: 'User Profile | Speckle'
+          title: HeaderTitle('User Profile')
         },
         component: () => import('@/main/pages/user/TheProfileUser.vue')
       },
@@ -289,15 +295,15 @@ const routes = [
     path: '/error',
     name: 'Error',
     meta: {
-      title: 'Error | Speckle'
+      title: HeaderTitle('Error')
     },
     component: () => import('@/main/pages/common/TheError.vue')
   },
   {
     path: '/onboarding',
-    name: 'Onboarding | Speckle',
+    name: HeaderTitle('Onboarding'),
     meta: {
-      title: 'Getting Started | Speckle'
+      title: HeaderTitle('Getting Started')
     },
     component: () => import('@/main/pages/onboarding/TheOnboarding.vue')
   },
@@ -305,14 +311,14 @@ const routes = [
     path: '*',
     name: 'notfound',
     meta: {
-      title: 'Not Found | Speckle'
+      title: HeaderTitle('Not Found')
     },
     component: () => import('@/main/pages/common/NotFound.vue')
   },
   {
     path: '/embed',
     meta: {
-      title: 'Embed View | Speckle'
+      title: HeaderTitle('Embed View')
     },
     component: () => import('@/main/layouts/TheBasic.vue'),
     children: [
@@ -320,7 +326,7 @@ const routes = [
         path: '/',
         name: 'viewer-embed',
         meta: {
-          title: 'Embed View | Speckle'
+          title: HeaderTitle('Embed View')
         },
         component: () => import('@/main/pages/stream/TheEmbed.vue')
       }

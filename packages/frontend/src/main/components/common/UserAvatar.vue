@@ -27,7 +27,7 @@
               {{ userById.name }}
               <v-icon
                 v-if="userById.verified"
-                v-tooltip="'Verfied email'"
+                v-tooltip="'Verified email'"
                 x-small
                 class="mr-2 primary--text"
               >

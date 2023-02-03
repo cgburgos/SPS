@@ -4,38 +4,43 @@
       <v-app-bar-nav-icon style="pointer-events: none">
         <v-icon>mdi-plus-box</v-icon>
       </v-app-bar-nav-icon>
-      <v-toolbar-title>Create a new Stream</v-toolbar-title>
+      <v-toolbar-title>Create a new Project</v-toolbar-title>
       <v-spacer></v-spacer>
       <v-btn icon @click="$emit('close')"><v-icon>mdi-close</v-icon></v-btn>
     </v-toolbar>
-    <v-form
-      ref="form"
-      v-model="valid"
-      lazy-validation
-      class="px-2"
-      @submit.prevent="createStream"
-    >
+    <v-form ref="form" v-model="valid" lazy-validation @submit.prevent="createStream">
       <v-card-text>
         <v-text-field
+          v-model="year"
+          autofocus
+          label="Year"
+          :rules="yearRules"
+          validate-on-blur
+          required
+        />
+        <v-text-field
+          v-model="code"
+          :rules="codeRules"
+          label="Code"
+          validate-on-blur
+          required
+        />
+        <v-text-field
           v-model="name"
-          :disabled="isLoading"
+          label="Project Name"
           :rules="nameRules"
           validate-on-blur
-          autofocus
-          label="Stream Name (optional)"
+          required
         />
-        <v-textarea
-          v-model="description"
-          :disabled="isLoading"
-          rows="1"
-          row-height="15"
-          label="Description (optional)"
-        />
-        <stream-visibility-toggle
+        <p v-if="valid" class="caption">
+          <b>Project Name:</b>
+          {{ ` ${year}-${code} ${name} ` }}
+        </p>
+        <!-- <stream-visibility-toggle
           :disabled="isLoading"
           :is-public.sync="isPublic"
           :is-discoverable.sync="isDiscoverable"
-        />
+        /> -->
         <p class="mt-5">
           <b>Invite collaborators</b>
         </p>
@@ -96,8 +101,7 @@
           color="primary"
           block
           large
-          :disabled="!valid || isLoading"
-          :loading="isLoading"
+          :disabled="!valid"
           elevation="0"
           type="submit"
         >
@@ -111,13 +115,12 @@
 import { gql } from '@apollo/client/core'
 import { userSearchQuery } from '@/graphql/user'
 import { AppLocalStorage } from '@/utils/localStorage'
-import StreamVisibilityToggle from '@/main/components/stream/editor/StreamVisibilityToggle.vue'
+// import StreamVisibilityToggle from '@/main/components/stream/editor/StreamVisibilityToggle.vue'
 import UserAvatar from '@/main/components/common/UserAvatar.vue'
-
 export default {
   components: {
-    UserAvatar,
-    StreamVisibilityToggle
+    UserAvatar
+    // StreamVisibilityToggle
   },
   props: {
     open: {
@@ -149,16 +152,27 @@ export default {
   },
   data() {
     return {
-      name: null,
-      description: null,
+      year: '',
+      code: '',
+      name: '',
+      description: '',
+      search: '',
       valid: false,
-      search: null,
-      nameRules: [],
+      nameRules: [
+        (v) =>
+          !v ||
+          (v.length <= 150 && v.length >= 3) ||
+          'Stream name must be between 3 and 150 characters.'
+      ],
+      yearRules: [
+        (v) => (1980 <= v && v <= 2051) || 'Year must be between 1980 and 2050'
+      ],
+      codeRules: [(v) => (0 <= v && v <= 500) || 'Code must be between 0 and 500'],
       isPublic: true,
-      isDiscoverable: false,
+      isDiscoverable: true,
       collabs: [],
       isLoading: false,
-      users: null
+      users: ''
     }
   },
   watch: {
@@ -175,8 +189,6 @@ export default {
         !v ||
         (v.length <= 150 && v.length >= 3) ||
         'Stream name must be between 3 and 150 characters.'
-      // (v) => (!v && v.length <= 150) || 'Name must be less than 150 characters',
-      // (v) => (!v && v.length >= 3) || 'Name must be at least 3 characters'
     ]
   },
   methods: {
@@ -196,6 +208,8 @@ export default {
     async createStream() {
       if (!this.$refs.form.validate()) return
 
+      const projectName = ` ${this.year}-${this.code} ${this.name} `
+
       const collabIds = this.collabs.map((c) => c.id)
       this.isLoading = true
       this.$mixpanel.track('Stream Action', { type: 'action', name: 'create' })
@@ -208,7 +222,7 @@ export default {
           `,
           variables: {
             myStream: {
-              name: this.name,
+              name: projectName,
               isPublic: this.isPublic,
               isDiscoverable: this.isDiscoverable,
               description: this.description,

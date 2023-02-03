@@ -173,6 +173,7 @@
         class=""
       >
         <viewer-bubbles v-if="!isEmbed" key="a" />
+        <!-- TODO FIX THE COMMENTS SECTIONS -->
         <comments-overlay
           key="c"
           :model-loaded="loadedModel"
@@ -339,6 +340,8 @@ export default defineComponent({
     // ViewerFiltersLegacy: () =>
     //   import('@/main/components/viewer/ViewerFilters-Legacy.vue'),
     ViewerBubbles: () => import('@/main/components/viewer/ViewerBubbles.vue'),
+
+    // TODO HERE IS THE COMMIT THIG
     CommentAddOverlay: () => import('@/main/components/viewer/CommentAddOverlay.vue'),
     CommentsOverlay: () => import('@/main/components/viewer/CommentsOverlay.vue')
   },

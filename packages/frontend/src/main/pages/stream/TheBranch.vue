@@ -37,8 +37,8 @@
             :key="commit.id + 'card'"
             cols="12"
             sm="6"
-            md="4"
-            xl="3"
+            md="3"
+            xl="2"
           >
             <commit-preview-card
               :commit="commit"

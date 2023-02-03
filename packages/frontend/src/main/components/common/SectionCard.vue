@@ -1,6 +1,7 @@
 <template>
   <v-card
-    :class="`elevation-${elevation} rounded-lg overflow-hidden ${funky ? 'funky' : ''}`"
+    :class="`elevation-0 rounded-lg overflow-hidden ${funky ? 'funky' : ''}`"
+    style="border: 1px solid #d2dad3"
   >
     <v-toolbar
       v-show="hasHeaderSlot || hasActionsSlot || expandable"
