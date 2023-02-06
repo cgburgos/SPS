@@ -6,7 +6,7 @@
           <v-app-bar-nav-icon style="pointer-events: none">
             <v-icon>mdi-share-variant</v-icon>
           </v-app-bar-nav-icon>
-          <v-toolbar-title>Engage Multiplayer Mode!</v-toolbar-title>
+          <v-toolbar-title>Sharing Data!</v-toolbar-title>
           <v-spacer></v-spacer>
           <v-btn icon @click="closeDialog"><v-icon>mdi-close</v-icon></v-btn>
         </v-toolbar>
@@ -53,6 +53,17 @@
             style="color: blue"
             prepend-inner-icon="mdi-cube-outline"
             :value="streamUrl + '/objects/' + resourceId"
+            @focus="copyToClipboard"
+          ></v-text-field>
+          <v-text-field
+            ref="streamUrl"
+            dark
+            filled
+            rounded
+            hint="Stream Id copied to clipboard. Just copy it to the HoPI DB"
+            style="color: blue"
+            prepend-inner-icon="mdi-identifier"
+            :value="streamId"
             @focus="copyToClipboard"
           ></v-text-field>
         </v-card-text>

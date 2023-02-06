@@ -2,13 +2,14 @@
   <div class="embed-viewer-core">
     <!-- Top bar (menu toggle + powered by speckle text) -->
     <div
-      class="embed-viewer-core__top-bar top-left bottom-left pa-4 d-flex justify-space-between"
+      class="embed-viewer-core__top-bar top-left bottom-left pa-4 d-flex justify-space-between elevation-0"
       style="right: 0px; position: fixed; z-index: 5; width: 100%"
     >
       <v-btn
         v-if="!hideSidebar"
         fab
         small
+        class="elevation-0"
         style="z-index=1000"
         @click="drawer = !drawer"
       >
@@ -16,10 +17,14 @@
       </v-btn>
       <v-fade-transition>
         <span v-if="!drawer && !hideLogo" class="caption d-inline-flex align-center">
-          <img src="@/assets/logo.svg" height="18" />
+          <img src="@/assets/UNSpeckle.svg" height="18" />
           <span style="margin-top: 2px" class="primary--text">
-            <a href="https://speckle.xyz" target="_blank" class="text-decoration-none">
-              <b>Powered by Speckle</b>
+            <a
+              href="http://localhost:3000"
+              target="_blank"
+              class="text-decoration-none"
+            >
+              <b>UNSpeckle</b>
             </a>
           </span>
         </span>
@@ -31,10 +36,10 @@
       v-show="!hideSidebar"
       ref="drawerRef"
       v-model="drawer"
-      class="viewer-controls-drawer"
+      class="viewer-controls-drawer elevation-0"
       app
       floating
-      :class="`grey ${$vuetify.theme.dark ? 'darken-4' : 'lighten-4'} elevation-1`"
+      :class="`grey lighten-4 elevation-0`"
       :width="navWidth"
       disable-resize-watcher
       style="z-index: 100"
@@ -65,11 +70,11 @@
     <!-- Appending buttons to viewercontrols (these should be ordered last) -->
     <portal to="viewercontrols" :order="100">
       <v-btn
-        v-tooltip="'View extra details in Speckle!'"
+        v-tooltip="'View extra details in UNSpeckle!'"
         icon
         dark
         large
-        class="elevation-5 primary pa-0 ma-o"
+        class="elevation-0 primary pa-0 ma-o"
         :href="goToServerUrl"
         target="blank"
       >

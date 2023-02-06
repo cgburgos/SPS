@@ -1,5 +1,5 @@
-export const validSpecialtiesArray = ['arch', 'mep']
-export const validOriginArray = ['rhino', 'revit']
+export const validSpecialtiesArray = ['general', 'arch', 'mep']
+export const validOriginArray = ['rhino', 'revit', 'various']
 export const reservedBranchNamesArray = ['main', 'globals']
 export const restrictionText =
   'Tip: Always use lowercase. You cannot use white spaces (to separate words use an underscore) or special characters.'
@@ -18,6 +18,11 @@ export const CommitTypeObjects = [
     CompleteName: 'Permanent',
     ShortName: 'PER',
     Code: 2
+  },
+  {
+    CompleteName: 'Display',
+    ShortName: 'DIS',
+    Code: 3
   },
   {
     CompleteName: 'Archive',
