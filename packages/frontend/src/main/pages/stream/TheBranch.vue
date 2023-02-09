@@ -16,7 +16,7 @@
     <v-row no-gutters>
       <v-col v-if="stream && stream.branch" cols="12">
         <v-row v-if="stream.branch.commits.items.length > 0">
-          <v-col cols="12">
+          <v-col cols="24">
             <v-toolbar flat dense class="transparent">
               <v-toolbar-title>Branch Commits</v-toolbar-title>
               <v-spacer></v-spacer>
@@ -35,10 +35,10 @@
           <v-col
             v-for="commit in allCommits"
             :key="commit.id + 'card'"
-            cols="12"
+            cols="24"
             sm="6"
-            md="3"
-            xl="2"
+            md="2"
+            xl="1"
           >
             <commit-preview-card
               :commit="commit"
@@ -76,6 +76,7 @@
       <infinite-loading
         v-if="stream && stream.branch && stream.branch.commits.totalCount !== 0"
         spinner="waveDots"
+        style="width: 100%; margin-top: 20px; user-select: none"
         @infinite="infiniteHandler"
       >
         <div slot="no-more">
