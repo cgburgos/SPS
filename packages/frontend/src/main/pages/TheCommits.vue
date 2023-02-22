@@ -20,7 +20,7 @@
         cols="12"
         sm="6"
         md="6"
-        lg="4"
+        lg="2"
         xl="3"
       >
         <commit-preview-card
@@ -35,12 +35,24 @@
         />
       </v-col>
       <v-col cols="12" sm="6" md="6" lg="4" xl="3">
-        <infinite-loading spinner="waveDots" @infinite="infiniteHandler">
+        <infinite-loading
+          spinner="waveDots"
+          style="
+            height: 100%;
+            width: 210px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            background-color: #f5f5f5;
+            user-select: none;
+          "
+          @infinite="infiniteHandler"
+        >
           <div slot="no-more">
-            <v-col>You've reached the end - no more commits.</v-col>
+            <v-col class="text--text">You've reached the end - no more commits.</v-col>
           </div>
           <div slot="no-results">
-            <v-col>You've reached the end - no more commits.</v-col>
+            <v-col class="text--text">You've reached the end - no more commits.</v-col>
           </div>
         </infinite-loading>
       </v-col>
