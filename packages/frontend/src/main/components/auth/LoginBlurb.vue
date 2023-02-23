@@ -26,20 +26,20 @@
         .
       </v-card-text>
       <v-card-text class="text--text">
-        Currently in {{ ServerPack.displayVersion }} with HoPI v{{ HoPI.version }}
+        Currently in {{ ServerPack.displayVersion }} with HoPI v{{
+          ServerPack.HoPIVersion
+        }}
       </v-card-text>
     </div>
   </v-card>
 </template>
 <script>
-import HoPIPackage from 'C:\\Users\\crist\\Documents\\DevFolder\\HoPI\\package.json'
 import ServerPackage from '../../../../../../package.json'
 
 export default {
   name: 'LoginBlurb',
   data() {
     return {
-      HoPI: HoPIPackage,
       ServerPack: ServerPackage
     }
   }
